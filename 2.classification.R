@@ -26,3 +26,23 @@ ggplot(dbTib, aes(insulin, sspg, col = class)) +
   geom_point() +
   theme_bw()
 
+# define the task
+task_diabetes <- makeClassifTask(data = dbTib, target = "class")
+
+# define the learner
+listLearners()$class
+listLearners("classif")$class
+listLearners("regr")$class
+listLearners("cluster")$class
+
+knn <- makeLearner("classif.knn", par.vals = list("k" = 2))
+knn
+
+# train the model
+knnModel <- train(knn, task_diabetes)
+knnModel
+knnPred <- predict(knnModel, newdata = dbTib)
+knnPred
+performance(knnPred, measures = list(mmce, acc))
+
+# holdout cross-validation
