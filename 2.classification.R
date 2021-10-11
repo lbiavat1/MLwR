@@ -46,3 +46,9 @@ knnPred
 performance(knnPred, measures = list(mmce, acc))
 
 # holdout cross-validation
+holdout <- makeResampleDesc(method = "Holdout", split = 2/3, stratify = TRUE)
+holdoutCV <- mlr::resample(learner = knn, task = task_diabetes, 
+                           resampling = holdout, measures = list(mmce, acc))
+calculateConfusionMatrix(holdoutCV$pred, relative = TRUE)
+
+# k-fold cross-validation
